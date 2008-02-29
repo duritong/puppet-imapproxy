@@ -33,5 +33,13 @@ class imapproxy {
             require => Package[$pkgname],
     }
 
+    service { 
+        imapproxy: 
+            ensure  => running,
+            enabled => true,
+            hasstatus => true,
+            hasrestart => true,
+    } 
+
 
 }
