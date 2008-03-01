@@ -36,7 +36,7 @@ class imapproxy {
     service { 
         imapproxy: 
             ensure  => running,
-            enabled => true,
+            enable => true,
             hasstatus => true,
             hasrestart => true,
     } 
