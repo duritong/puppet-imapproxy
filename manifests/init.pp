@@ -5,32 +5,29 @@
 # modules_dir { "imapproxy": }
 
 class imapproxy {
-    $modulename = "imapproxy"
-    $pkgname = "up-imapproxy"
-    $gentoocat = "net-mail"
-    $cnfname = "imapproxy.conf"
-    $cnfpath = "/etc"
+    case $operatingsystem {
+        gentoo: { include imapproxy::gentoo }
+        default: { include imapproxy::base }
+    }
+}
 
+class impapproxy::base {
 
-    package { $pkgname:
+    package { up-imapproxy:
         ensure => present,
-        category => $operatingsystem ? {
-            gentoo => $gentoocat,
-            default => '',
-        }
     }
 
     file{
-        "${cnfpath}/${cnfname}":
+        "/etc/imapproxy.conf":
             source => [
-                "puppet://$server/dist/${modulename}/${fqdn}/${cnfname}",
-                "puppet://$server/${modulename}/${fqdn}/${cnfname}",
-                "puppet://$server/${modulename}/${cnfname}"
+                "puppet://$server/files/imapproxy/${fqdn}/imapproxy.conf",
+                "puppet://$server/files/imapproxy/imapproxy.conf",
+                "puppet://$server/imapproxy/imapproxy.conf"
             ],
             owner => root,
             group => 0,
             mode => 0444,
-            require => Package[$pkgname],
+            require => Package[up-imapproxy],
             notify => Service[imapproxy],
     }
 
@@ -41,6 +38,10 @@ class imapproxy {
             hasstatus => true,
             hasrestart => true,
     } 
+}
 
-
+class imapproxy::gentoo inherits imapproxy::base {
+    Package[up-imapproxy]{
+        category => 'net-mail',
+    }
 }
