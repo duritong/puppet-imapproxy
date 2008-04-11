@@ -11,7 +11,7 @@ class imapproxy {
     }
 }
 
-class impapproxy::base {
+class imapproxy::base {
 
     package { up-imapproxy:
         ensure => present,
