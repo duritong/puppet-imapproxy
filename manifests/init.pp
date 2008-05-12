@@ -1,5 +1,6 @@
 # modules/imapproxy/manifests/init.pp - manage imapproxy stuff
 # Copyright (C) 2007 admin@immerda.ch
+# GPLv3
 #
 
 # modules_dir { "imapproxy": }
@@ -8,6 +9,10 @@ class imapproxy {
     case $operatingsystem {
         gentoo: { include imapproxy::gentoo }
         default: { include imapproxy::base }
+    }
+
+    if $selinux {
+        include imapproxy::selinux
     }
 }
 
