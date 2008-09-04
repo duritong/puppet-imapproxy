@@ -11,9 +11,9 @@ class imapproxy {
         default: { include imapproxy::base }
     }
 
-    if $selinux {
-        include imapproxy::selinux
-    }
+#    if $selinux {
+#        include imapproxy::selinux
+#    }
 }
 
 class imapproxy::base {
@@ -22,26 +22,18 @@ class imapproxy::base {
         ensure => present,
     }
 
-    file{
-        "/etc/imapproxy.conf":
-            source => [
-                "puppet://$server/files/imapproxy/${fqdn}/imapproxy.conf",
-                "puppet://$server/files/imapproxy/imapproxy.conf",
-                "puppet://$server/imapproxy/imapproxy.conf"
-            ],
-            owner => root,
-            group => 0,
-            mode => 0444,
-            require => Package[up-imapproxy],
-            notify => Service[imapproxy],
+    file{'/etc/imapproxy.conf':
+        source => [ "puppet://$server/files/imapproxy/${fqdn}/imapproxy.conf",
+                    "puppet://$server/files/imapproxy/imapproxy.conf",
+                    "puppet://$server/imapproxy/imapproxy.conf" ],
+        require => Package[up-imapproxy],
+        notify => Service[imapproxy],
+        owner => root, group => 0, mode => 0644;
     }
 
-    service { 
-        imapproxy: 
-            ensure  => running,
-            enable => true,
-            hasstatus => true,
-            hasrestart => true,
+    service {'imapproxy': 
+        ensure  => running,
+        enable => true,
     } 
 }
 
