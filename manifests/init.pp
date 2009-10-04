@@ -10,6 +10,6 @@ class imapproxy {
     }
 
     if $use_shorewall {
-        include shorewall::imap::client
+        include shorewall::rules::out::imap
     }
 }
