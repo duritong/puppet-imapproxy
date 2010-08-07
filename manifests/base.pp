@@ -5,9 +5,9 @@ class imapproxy::base {
     }
 
     file{'/etc/imapproxy.conf':
-        source => [ "puppet://$server/modules/site-imapproxy/${fqdn}/imapproxy.conf",
-                    "puppet://$server/modules/site-imapproxy/imapproxy.conf",
-                    "puppet://$server/modules/imapproxy/imapproxy.conf" ],
+        source => [ "puppet:///modules/site-imapproxy/${fqdn}/imapproxy.conf",
+                    "puppet:///modules/site-imapproxy/imapproxy.conf",
+                    "puppet:///modules/imapproxy/imapproxy.conf" ],
         require => Package[up-imapproxy],
         notify => Service[imapproxy],
         owner => root, group => 0, mode => 0644;
