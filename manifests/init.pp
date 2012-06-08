@@ -4,12 +4,12 @@
 #
 
 class imapproxy {
-    case $operatingsystem {
-        gentoo: { include imapproxy::gentoo }
-        default: { include imapproxy::base }
-    }
+  case $::operatingsystem {
+    gentoo: { include imapproxy::gentoo }
+    default: { include imapproxy::base }
+  }
 
-    if $use_shorewall {
-        include shorewall::rules::out::imap
-    }
+  if hiera('use_shorewall',false) {
+    include shorewall::rules::out::imap
+  }
 }
