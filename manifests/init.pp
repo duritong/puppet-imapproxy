@@ -3,13 +3,15 @@
 # GPLv3
 #
 
-class imapproxy {
+class imapproxy (
+  $manage_shorewall = false  
+) {
   case $::operatingsystem {
     gentoo: { include imapproxy::gentoo }
     default: { include imapproxy::base }
   }
 
-  if hiera('use_shorewall',false) {
+  if $manage_shorewall {
     include shorewall::rules::out::imap
   }
 }
