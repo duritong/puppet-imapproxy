@@ -3,8 +3,10 @@
 # GPLv3
 #
 
+# install and manage imapproxy
 class imapproxy (
-  $manage_shorewall = false  
+  $manage_shorewall = false,
+  $manage_monit     = false,
 ) {
   case $::operatingsystem {
     gentoo: { include imapproxy::gentoo }
@@ -13,5 +15,8 @@ class imapproxy (
 
   if $manage_shorewall {
     include shorewall::rules::out::imap
+  }
+  if $manage_monit {
+    include imapproxy::monit
   }
 }
